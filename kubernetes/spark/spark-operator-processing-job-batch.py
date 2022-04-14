@@ -7,7 +7,7 @@ aws_secret_access_key = os.environ['AWS_SECRET_ACCESS_KEY']
 
 # set conf
 conf = (
-SparkConf()
+    SparkConf()
     .set("spark.hadoop.fs.s3a.access.key", aws_access_key_id)
     .set("spark.hadoop.fs.s3a.secret.key", aws_secret_access_key)
     .set("spark.hadoop.fs.s3a.fast.upload", True)
@@ -17,15 +17,15 @@ SparkConf()
 
 # apply config
 sc = SparkContext(conf=conf).getOrCreate()
-    
+
 
 if __name__ == "__main__":
 
     # init spark session
     spark = SparkSession\
-            .builder\
-            .appName("Repartition Job")\
-            .getOrCreate()
+        .builder\
+        .appName("Repartition Job")\
+        .getOrCreate()
 
     spark.sparkContext.setLogLevel("WARN")
 
@@ -34,19 +34,18 @@ if __name__ == "__main__":
         .read
         .format("csv")
         .options(header='true', inferSchema='true', delimiter=';')
-        .load("s3a://dl-landing-zone-539445819060/titanic/titanic.csv")
+        .load("s3a://datalake-igti-mod3/dl-landing-zone-539445819060/titanic/titanic.csv")
     )
-    
 
     df.show()
     df.printSchema()
 
     (df
-    .write
-    .mode("overwrite")
-    .format("parquet")
-    .save("s3a://dl-processing-zone-539445819060/titanic")
-    )
+     .write
+     .mode("overwrite")
+     .format("parquet")
+     .save("s3a://datalake-igti-mod3/dl-processing-zone-539445819060/titanic")
+     )
 
     print("*****************")
     print("Escrito com sucesso!")
