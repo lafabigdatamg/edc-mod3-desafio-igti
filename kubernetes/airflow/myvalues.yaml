@@ -174,7 +174,7 @@ env:
   - name: AIRFLOW__CORE__REMOTE_LOGGING
     value: 'True'
   - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
-    value: 's3://airflow-logs-539445819060/logs/'
+    value: 's3://datalake-igti-mod3/airflow-logs/'
   - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
     value: 'my_aws'
 # - name: ""
@@ -660,10 +660,10 @@ webserver:
   defaultUser:
     enabled: true
     role: Admin
-    username: neylsoncrepalde
-    email: neylson.crepalde@a3data.com.br
-    firstName: Neylson
-    lastName: Crepalde
+    username: eric.alberto
+    email: ericalbertosilva@gmail.com
+    firstName: Eric
+    lastName: Alberto
     password: admin
 
   # Launch additional containers into webserver.
@@ -1176,7 +1176,7 @@ dags:
     # ssh examples ssh://git@github.com/apache/airflow.git
     # git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    repo: https://github.com/neylsoncrepalde/edc_mod4_exercise_igti.git
+    repo: https://github.com/lafabigdatamg/edc-mod3-desafio-igti.git
     branch: dev
     rev: HEAD
     depth: 1
@@ -1243,4 +1243,3 @@ logs:
     storageClassName:
     ## the name of an existing PVC to use
     existingClaim:
-
