@@ -1,3 +1,4 @@
+from airflow.utils.dates import days_ago
 from airflow import DAG
 
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
@@ -8,18 +9,17 @@ import boto3
 
 aws_access_key_id = Variable.get('aws_access_key_id')
 aws_secret_access_key = Variable.get('aws_secret_access_key')
-glue = boto3.client('glue', region_name='us-east-1',
-                    aws_access_key_id=aws_access_key_id, 
+glue = boto3.client('glue', region_name='us-east-2',
+                    aws_access_key_id=aws_access_key_id,
                     aws_secret_access_key=aws_secret_access_key)
 
-from airflow.utils.dates import days_ago
 
 def trigger_crawler_inscricao_func():
-        glue.start_crawler(Name='enem_anon_crawler')
+    glue.start_crawler(Name='enem_anon_crawler')
+
 
 def trigger_crawler_final_func():
-        glue.start_crawler(Name='enem_uf_final_crawler')
-
+    glue.start_crawler(Name='enem_uf_final_crawler')
 
 
 with DAG(
@@ -143,7 +143,8 @@ anonimiza_inscricao_monitor >> trigger_crawler_inscricao
 converte_parquet_monitor >> agrega_idade >> agrega_idade_monitor
 converte_parquet_monitor >> agrega_sexo >> agrega_sexo_monitor
 converte_parquet_monitor >> agrega_notas >> agrega_notas_monitor
-[agrega_idade_monitor, agrega_sexo_monitor, agrega_notas_monitor] >> join_final >> join_final_monitor
+[agrega_idade_monitor, agrega_sexo_monitor,
+    agrega_notas_monitor] >> join_final >> join_final_monitor
 join_final_monitor >> trigger_crawler_final
 [agrega_idade_monitor, agrega_notas_monitor] >> agrega_sexo
 [agrega_idade_monitor, agrega_notas_monitor] >> anonimiza_inscricao
